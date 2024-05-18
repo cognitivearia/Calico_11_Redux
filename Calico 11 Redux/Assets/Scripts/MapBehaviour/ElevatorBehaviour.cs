@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Autohand;
+using DG.Tweening;
 
 public class ElevatorBehaviour : MonoBehaviour
 {
@@ -16,9 +17,16 @@ public class ElevatorBehaviour : MonoBehaviour
     [SerializeField] MeshRenderer button;
     [SerializeField] Material material;
 
+    private PathType pathTypeSys = PathType.Linear;
+    private Vector3[] pathvalF = new Vector3[1];
+    private Vector3[] pathvalI = new Vector3[1];
+    private Tween t;
+
     void Start()
     {
         thisTransform = GetComponent<Transform>();
+        pathvalF[0] = finalTransform.position;
+        pathvalI[0] = initialTransform.position;
     }
 
     private void OnEnable()
@@ -33,17 +41,22 @@ public class ElevatorBehaviour : MonoBehaviour
 
     void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             buttonPress();
-        }*/
+        }
 
         if (actualFloor == 1 && gem)
         {
             if (moving == true)
             {
-                thisTransform.position = thisTransform.position + new Vector3(0, Time.deltaTime * elevatorSpeed, 0);
-                if (thisTransform.position.y >= finalTransform.position.y)
+                // OLD // thisTransform.position = thisTransform.position + new Vector3(0, Time.deltaTime * elevatorSpeed, 0);
+                //thisTransform.DOMoveY(finalTransform.position.y, elevatorSpeed);   //(finalTransform.position, elevatorSpeed);
+
+                t = thisTransform.DOPath(pathvalF, elevatorSpeed, pathTypeSys);
+                t.SetEase(Ease.Linear);
+
+                if (thisTransform.position.y >= finalTransform.position.y - 1)
                 {
                     actualFloor = 2;
                     moving = false;
@@ -54,8 +67,13 @@ public class ElevatorBehaviour : MonoBehaviour
         {
             if (moving == true)
             {
-                thisTransform.position = thisTransform.position - new Vector3(0, Time.deltaTime * elevatorSpeed, 0);
-                if (thisTransform.position.y <= initialTransform.position.y)
+                // OLD // thisTransform.position = thisTransform.position - new Vector3(0, Time.deltaTime * elevatorSpeed, 0);
+                //thisTransform.DOMoveY(initialTransform.position.y, elevatorSpeed);
+
+                t = thisTransform.DOPath(pathvalI, elevatorSpeed, pathTypeSys);
+                t.SetEase(Ease.Linear);
+
+                if (thisTransform.position.y <= initialTransform.position.y + 1)
                 {
                     actualFloor = 1;
                     moving = false;
