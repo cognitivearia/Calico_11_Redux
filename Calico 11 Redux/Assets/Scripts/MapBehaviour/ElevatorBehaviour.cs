@@ -22,8 +22,11 @@ public class ElevatorBehaviour : MonoBehaviour
     private Vector3[] pathvalI = new Vector3[1];
     private Tween t;
 
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         thisTransform = GetComponent<Transform>();
         pathvalF[0] = finalTransform.position;
         pathvalI[0] = initialTransform.position;
@@ -85,14 +88,23 @@ public class ElevatorBehaviour : MonoBehaviour
     public void buttonPress()
     {
         moving = true;
+        AudioPlay();
     }
 
     public void OnPlace(PlacePoint point, Grabbable grab)
     {
-        if(grab.name == "ChargedGem")
+        if (grab.name == "ChargedGem")
         {
             button.material = material;
             gem = true;
+        }
+    }
+
+    public void AudioPlay()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
         }
     }
 }
