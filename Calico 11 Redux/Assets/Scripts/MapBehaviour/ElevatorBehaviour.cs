@@ -22,6 +22,8 @@ public class ElevatorBehaviour : MonoBehaviour
     private Vector3[] pathvalI = new Vector3[1];
     private Tween t;
 
+    [SerializeField] MeshRenderer[] pantallasmeshes;
+
     private AudioSource audioSource;
 
     void Start()
@@ -97,6 +99,11 @@ public class ElevatorBehaviour : MonoBehaviour
         {
             button.material = material;
             gem = true;
+            foreach (var item in pantallasmeshes)
+            {
+                item.material = material;
+            }
+            //SONIDO
         }
     }
 
