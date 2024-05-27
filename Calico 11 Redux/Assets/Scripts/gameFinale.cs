@@ -26,25 +26,32 @@ public class gameFinale : MonoBehaviour
 
         if (grabbed)
         {
-            if (!objectAudio.isPlaying && secretInt == 0) 
+            if (!objectAudio.isPlaying && secretInt == 0)
             {
                 objectAudio.Play();
                 secretInt = 1;
             }
 
             timer += Time.deltaTime;
-            if (timer>=timeToWait)
+            if (timer >= timeToWait)
             {
                 player.transform.position = teleportTransform.position;
                 UIanimator.SetTrigger("Start");
-                AutoHandPlayer.Instance.ToggleFlying();
+
             }
         }
     }
+
 
     public void GrabbedObject()
     {
         grabbed = true;
     }
+
+    public void ToggleFlying()
+    {
+        AutoHandPlayer.Instance.ToggleFlying();
+    }
+
 
 }
